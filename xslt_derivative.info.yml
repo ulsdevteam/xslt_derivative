@@ -1,0 +1,9 @@
+name: XSLT Derivative
+description: Islandora module for creating derivatives of XML media with an XSL Transform
+package: Custom
+
+type: module
+core_version_requirement: ^8 || ^9 || ^10
+
+dependencies:
+  - drupal:islandora
