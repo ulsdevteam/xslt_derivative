@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\transkribus_derivative\Plugin\Action;
+namespace Drupal\xslt_derivative\Plugin\Action;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
