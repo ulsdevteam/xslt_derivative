@@ -300,7 +300,7 @@ class XsltDerivative extends ConfigurableActionBase implements ContainerFactoryP
      */
     protected function get_media_type() {
         $entity_ids = $this->entity_type_manager->getStorage('media_type')
-            ->getQuery()->condition('id', $this->configuration['plaintext_media_type'])->execute();
+            ->getQuery()->condition('id', $this->configuration['dest_media_type'])->execute();
 
         $id = reset($entity_ids);
         if ($id !== FALSE) {
