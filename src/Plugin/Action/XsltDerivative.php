@@ -216,14 +216,16 @@ class XsltDerivative extends ConfigurableActionBase implements ContainerFactoryP
      * {@inheritdoc}
      */
     public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
-        $this->configuration['transform_scheme'] = $form_state->getValue('transform_scheme');
-        $this->configuration['transform_path'] = trim($form_state->getValue('transform_path'));
-        $transform_path = $this->configuration['transform_scheme'] . '://' . $this->configuration['transform_path'];
-        $transform_file_temp = File::load($form_state->getValue('transform_file')[0]);
-        $transform_file = $this->file_repository->move($transform_file_temp, $transform_path);
-        $transform_file->setPermanent();
-        $transform_file->save();
-        $this->configuration['transform_file'] = $transform_file->id();
+        if ($form_state->hasValue('transform_file')) {
+            $this->configuration['transform_scheme'] = $form_state->getValue('transform_scheme');
+            $this->configuration['transform_path'] = trim($form_state->getValue('transform_path'));
+            $transform_path = $this->configuration['transform_scheme'] . '://' . $this->configuration['transform_path'];
+            $transform_file_temp = File::load($form_state->getValue('transform_file')[0]);
+            $transform_file = $this->file_repository->move($transform_file_temp, $transform_path);
+            $transform_file->setPermanent();
+            $transform_file->save();
+            $this->configuration['transform_file'] = $transform_file->id();
+        }
         $source_term = $this->entity_type_manager->getStorage('taxonomy_term')->load($form_state->getValue('source_term'));
         $dest_term = $this->entity_type_manager->getStorage('taxonomy_term')->load($form_state->getValue('dest_term'));
         $this->configuration['source_term_uri'] = $this->utils->getUriForTerm($source_term);
