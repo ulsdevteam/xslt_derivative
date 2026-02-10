@@ -216,11 +216,12 @@ class XsltDerivative extends ConfigurableActionBase implements ContainerFactoryP
      * {@inheritdoc}
      */
     public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
-        if ($form_state->hasValue('transform_file')) {
+        $file_id = $form_state->getValue('transform_file');
+        if (!empty($file_id)) {
             $this->configuration['transform_scheme'] = $form_state->getValue('transform_scheme');
             $this->configuration['transform_path'] = trim($form_state->getValue('transform_path'));
             $transform_path = $this->configuration['transform_scheme'] . '://' . $this->configuration['transform_path'];
-            $transform_file_temp = File::load($form_state->getValue('transform_file')[0]);
+            $transform_file_temp = File::load($file_id[0]);
             $transform_file = $this->file_repository->move($transform_file_temp, $transform_path);
             $transform_file->setPermanent();
             $transform_file->save();
