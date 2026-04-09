@@ -134,7 +134,7 @@ class XsltDerivative extends ConfigurableActionBase implements ContainerFactoryP
         return [
             'transform_file' => '',
             'transform_scheme' => $this->config->get('default_scheme'),
-            'transform_path' => 'finding_aid.xsl',
+            'transform_path' => 'transform.xsl',
             'source_term_uri' => '',
             'dest_term_uri' => '',
             'dest_media_type' => '',
