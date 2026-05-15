@@ -138,6 +138,7 @@ class XsltDerivative extends ConfigurableActionBase implements ContainerFactoryP
             'source_term_uri' => '',
             'dest_term_uri' => '',
             'dest_media_type' => '',
+            'mime_type' => '',
             'dest_scheme' => $this->config->get('default_scheme'),
             'dest_path' => '[date:custom:Y]-[date:custom:m]/[node:nid]_transformed.html'
         ];
@@ -195,7 +196,14 @@ class XsltDerivative extends ConfigurableActionBase implements ContainerFactoryP
             '#required' => TRUE,
             '#description' => $this->t('The Drupal media type for the destination media'),
         ];
-         $form['dest_scheme'] = [
+        $form['mime_type'] = [
+            '#type' => 'textfield',
+            '#title' => $this->t('MIME Type'),
+            '#default_value' => $this->configuration['mime_type'],
+            '#required' => FALSE,
+            '#description' => $this->t('MIME type to save derivative as (e.g. text/html, application/xml, etc...)'),
+        ];
+        $form['dest_scheme'] = [
             '#type' => 'select',
             '#title' => $this->t('File system for destination file'),
             '#options' => $scheme_options,
@@ -232,6 +240,7 @@ class XsltDerivative extends ConfigurableActionBase implements ContainerFactoryP
         $this->configuration['source_term_uri'] = $this->utils->getUriForTerm($source_term);
         $this->configuration['dest_term_uri'] = $this->utils->getUriForTerm($dest_term);
         $this->configuration['dest_media_type'] = $form_state->getValue('dest_media_type');
+        $this->configuration['mime_type'] = $form_state->getValue('mime_type');
         $this->configuration['dest_scheme'] = $form_state->getValue('dest_scheme');
         $this->configuration['dest_path'] = trim($form_state->getValue('dest_path'));    
     }
@@ -284,7 +293,7 @@ class XsltDerivative extends ConfigurableActionBase implements ContainerFactoryP
             $this->get_media_type(),
             $dest_term,
             $stream,
-            $mime_type,
+            $this->configuration['mime_type'],
             $dest_path
         );
         fclose($stream);
