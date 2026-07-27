@@ -6,6 +6,9 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Action\ConfigurableActionBase;
+use Drupal\Component\Render\FormattableMarkup;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\islandora\IslandoraUtils;
 use Drupal\islandora\MediaSource\MediaSourceService;
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -156,6 +159,13 @@ class XsltDerivative extends ConfigurableActionBase implements ContainerFactoryP
                 'file_validate_extensions' => ['xsl xslt'],
             ],
         ];
+        // Show info about the currently stored file, if one exists.
+        if (!empty($this->configuration['transform_file'])) {
+          $transform_file = File::load($this->configuration['transform_file']);
+          if ($transform_file) {
+            $form['transform_file']['#description'] = $this->buildFileInfoMarkup($transform_file);
+          }
+        }
         $schemes = $this->utils->getFilesystemSchemes();
         $scheme_options = array_combine($schemes, $schemes);
         $form['transform_scheme'] = [
@@ -358,5 +368,24 @@ class XsltDerivative extends ConfigurableActionBase implements ContainerFactoryP
     public function access($object, $account = NULL, $return_as_object = FALSE) {
         $result = AccessResult::allowed();
         return $return_as_object ? $result : $result->isAllowed();
+    }
+
+    /**
+     * Builds "filename (size, date)" markup for the currently stored file.
+     */
+    protected function buildFileInfoMarkup(File $file) {
+      $link = Link::fromTextAndUrl(
+        $file->getFilename(),
+        Url::fromUri($file->createFileUrl(FALSE))
+      )->toString();
+
+      $size = format_size($file->getSize());
+      $date = date('Y-m-d', $file->getChangedTime());
+
+      return new FormattableMarkup('@link (@size, @date)', [
+        '@link' => $link,
+        '@size' => $size,
+        '@date' => $date,
+      ]);
     }
 }
