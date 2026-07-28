@@ -1,0 +1,9 @@
+{
+  "name": "ulsdevteam/xslt_derivative",
+  "type": "drupal-module-custom",
+  "description": "A Drupal module providing a custom Action to transform XML media to another media",
+  "keywords": ["Drupal"],
+  "license": "MIT",
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
