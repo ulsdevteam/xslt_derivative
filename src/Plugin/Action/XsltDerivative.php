@@ -14,6 +14,7 @@ use Drupal\islandora\MediaSource\MediaSourceService;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\StringTranslation\ByteSizeMarkup;
 use Drupal\token\TokenInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -379,7 +380,7 @@ class XsltDerivative extends ConfigurableActionBase implements ContainerFactoryP
         Url::fromUri($file->createFileUrl(FALSE))
       )->toString();
 
-      $size = format_size($file->getSize());
+      $size = ByteSizeMarkup::create($file->getSize());
       $date = date('Y-m-d', $file->getChangedTime());
 
       return new FormattableMarkup('@link (@size, @date)', [
