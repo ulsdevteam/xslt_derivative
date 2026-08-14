@@ -3,7 +3,7 @@ description: Islandora module for creating derivatives of XML media with an XSL 
 package: Custom
 
 type: module
-core_version_requirement: ^8 || ^9 || ^10 || ^11
+core_version_requirement: ^10.2 || ^11
 
 dependencies:
   - drupal:islandora
