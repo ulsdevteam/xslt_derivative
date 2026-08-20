@@ -157,7 +157,9 @@ class XsltDerivative extends ConfigurableActionBase implements ContainerFactoryP
             '#title' => $this->t('XSLT Transform File'),
             '#upload_location' => 'temporary://xslt_derivative',
             '#upload_validators' => [
-                'file_validate_extensions' => ['xsl xslt'],
+                'FileExtension' => [
+                    'extensions' => 'xsl xslt',
+                ],
             ],
         ];
         // Show info about the currently stored file, if one exists.
